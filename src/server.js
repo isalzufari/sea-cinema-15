@@ -15,8 +15,15 @@ const authentications = require('./api/authentications');
 const AuthenticationsService = require('./services/mysql/AuthenticationsService');
 const TokenManager = require('./utils/TokenManager');
 
+const balances = require('./api/balance');
+const BalancesService = require('./services/mysql/BalancesService');
+
+const movies = require('./api/movies');
+const routes = require('./api/users/routes');
+
 const init = async () => {
   const usersService = new UsersService();
+  const balancesService = new BalancesService();
   const authenticationsService = new AuthenticationsService();
 
   const server = Hapi.server({
@@ -29,28 +36,15 @@ const init = async () => {
     },
   });
 
-  await server.register([
-    {
-      plugin: users,
-      options: {
-        service: usersService
-      },
-      routes: {
-        prefix: '/users'
-      },
-    },
-    {
-      plugin: authentications,
-      options: {
-        authenticationsService,
-        usersService,
-        tokenManager: TokenManager,
-      },
-      routes: {
-        prefix: '/authentications'
-      }
+  server.route({
+    method: 'GET',
+    path: '/',
+    handler: () => {
+      return ({
+        status: 'success'
+      });
     }
-  ])
+  });
 
   await server.register(Jwt);
 
@@ -83,17 +77,46 @@ const init = async () => {
     }
 
     return response.continue || response;
-  })
-
-  server.route({
-    method: 'GET',
-    path: '/',
-    handler: () => {
-      return ({
-        status: 'success'
-      });
-    }
   });
+
+  await server.register([
+    {
+      plugin: users,
+      options: {
+        service: usersService,
+        balancesService
+      },
+      routes: {
+        prefix: '/users'
+      },
+    },
+    {
+      plugin: authentications,
+      options: {
+        authenticationsService,
+        usersService,
+        tokenManager: TokenManager,
+      },
+      routes: {
+        prefix: '/authentications'
+      }
+    },
+    {
+      plugin: movies,
+      routes: {
+        prefix: '/movies'
+      }
+    },
+    {
+      plugin: balances,
+      options: {
+        service: balancesService,
+      },
+      routes: {
+        prefix: '/balance'
+      }
+    }
+  ]);
 
   await server.start();
   console.log(`Server berjalan pada ${server.info.uri}`);
