@@ -15,7 +15,7 @@ class UsersService {
     const query = {
       text: 'INSERT INTO users (username, password, name, age) VALUES (?, ?, ?, ?)',
       values: [username, hashedPassword, name, age]
-    }
+    };
 
     const [result, fields] = await this._pool.query(
       query.text,
