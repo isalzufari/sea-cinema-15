@@ -1,29 +1,29 @@
 const pool = require('../../utils/MySQL');
+const InvariantError = require('../../exceptions/InvariantError');
 
 class BookedService {
   constructor() {
     this._pool = pool.promise();
   }
 
-  async bookedSeat({ id }) {
+  async getMovieSeats({ id_movie }) {
     const query = {
-      text: 'UPDATE seats SET isBooked = 1 WHERE id = ?',
-      values: [id]
-    }
+      text: 'SELECT * from seats WHERE id_movie = ?',
+      values: [id_movie],
+    };
 
     const [result, fields] = await this._pool.query(
       query.text,
       query.values,
     );
 
-    console.log(result);
     return result;
   }
 
-  async unBookedSeat({ id }) {
+  async bookedSeat({ id_seat }) {
     const query = {
-      text: 'UPDATE seats SET isBooked = 0 WHERE id = ?',
-      values: [id]
+      text: 'UPDATE seats SET isBooked = 1 WHERE id = ?',
+      values: [id_seat]
     }
 
     const [result, fields] = await this._pool.query(
@@ -31,8 +31,25 @@ class BookedService {
       query.values,
     );
 
-    console.log(result);
-    return result;
+    if (!result.affectedRows) {
+      throw new InvariantError('Booked seat failure: bookedSeat');
+    }
+  }
+
+  async unBookedSeat({ id_seat }) {
+    const query = {
+      text: 'UPDATE seats SET isBooked = 0 WHERE id = ?',
+      values: [id_seat]
+    }
+
+    const [result, fields] = await this._pool.query(
+      query.text,
+      query.values,
+    );
+
+    if (!result.affectedRows) {
+      throw new InvariantError('Unbooked seat failure: unBookedSeat');
+    }
   }
 }
 

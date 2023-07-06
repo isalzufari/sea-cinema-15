@@ -6,6 +6,22 @@ class TicketsService {
     this._pool = pool.promise();
   }
 
+  async getTicket({ id_booked }) {
+    const query = {
+      text: `SELECT * FROM tickets
+      INNER JOIN seats ON seats.id = tickets.id_seat
+      WHERE tickets.id_booked = ?`,
+      values: [id_booked]
+    };
+
+    const [result, fields] = await this._pool.query(
+      query.text,
+      query.values,
+    );
+
+    return result;
+  }
+
   async addTicket({ id_booked, id_seat, name, age }) {
     const query = {
       text: 'INSERT INTO tickets (id_booked, id_seat, name, age) VALUES (?, ?, ?, ?)',

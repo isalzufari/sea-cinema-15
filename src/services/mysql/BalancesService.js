@@ -49,6 +49,10 @@ class BalanceService {
       query.values,
     );
 
+    if (!result.affectedRows) {
+      throw new InvariantError('Withdraw balance failure: withdrawBalance');
+    }
+
     return result;
   }
 

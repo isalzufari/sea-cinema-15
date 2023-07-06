@@ -19,12 +19,21 @@ const balances = require('./api/balance');
 const BalancesService = require('./services/mysql/BalancesService');
 
 const movies = require('./api/movies');
-const routes = require('./api/users/routes');
+const MoviesService = require('./services/mysql/MoviesService');
+
+const bookings = require('./api/bookings');
+const BookingsService = require('./services/mysql/BookingsService');
+const TicketsService = require('./services/mysql/TicketsService');
+const SeatsService = require('./services/mysql/SeatsService');
 
 const init = async () => {
   const usersService = new UsersService();
   const balancesService = new BalancesService();
   const authenticationsService = new AuthenticationsService();
+  const moviesService = new MoviesService();
+  const bookingsService = new BookingsService();
+  const ticketsService = new TicketsService();
+  const seatsService = new SeatsService();
 
   const server = Hapi.server({
     port: process.env.PORT,
@@ -103,6 +112,10 @@ const init = async () => {
     },
     {
       plugin: movies,
+      options: {
+        service: moviesService,
+        seatsService
+      },
       routes: {
         prefix: '/movies'
       }
@@ -114,6 +127,19 @@ const init = async () => {
       },
       routes: {
         prefix: '/balance'
+      }
+    },
+    {
+      plugin: bookings,
+      options: {
+        service: bookingsService,
+        ticketsService,
+        seatsService,
+        balancesService,
+        moviesService
+      },
+      routes: {
+        prefix: '/booking'
       }
     }
   ]);

@@ -69,6 +69,20 @@ class UsersService {
 
     return id;
   }
+
+  async getUser({ id_user }) {
+    const query = {
+      text: 'SELECT username, name, age FROM `users` WHERE id = ?',
+      values: [id_user],
+    };
+
+    const [result, fields] = await this._pool.query(
+      query.text,
+      query.values,
+    );
+
+    return result;
+  }
 }
 
 module.exports = UsersService;
