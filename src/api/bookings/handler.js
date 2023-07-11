@@ -15,19 +15,15 @@ class BookingsHandler {
     const { id: id_user } = request.auth.credentials;
     const booked = await this._service.getBooked({ id_user });
 
-    const { id: id_booked } = booked[0];
-    const tickets = await this._ticketsService.getTicket({ id_booked })
-
-    console.log(id_booked);
-
-    const mappedBooking = booked.map((book) => ({
+    const mappedBooking = await Promise.all(booked.map(async (book) => ({
       ...book,
-      tickets
-    }));
+      movie: await this._moviesService.getMovie({ id: book.id_movie }),
+      tickets: await this._ticketsService.getTicket({ id_booked: book.id })
+    })));
 
     const response = h.response({
       status: 'success',
-      data: mappedBooking[0]
+      data: mappedBooking
     });
     response.code(201);
     return response;

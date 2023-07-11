@@ -3,6 +3,9 @@ const routes = (handler) => [
     method: 'GET',
     path: '/',
     handler: handler.getBalanceHandler,
+    options: {
+      auth: 'seacinema_jwt'
+    },
   },
   {
     method: 'POST',

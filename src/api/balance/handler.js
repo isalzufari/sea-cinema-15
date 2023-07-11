@@ -2,12 +2,22 @@ class BalancesHandler {
   constructor(service) {
     this._service = service;
 
+    this.getBalanceHandler = this.getBalanceHandler.bind(this);
     this.topUpBalanceHandler = this.topUpBalanceHandler.bind(this);
     this.withDrawBalanceHandler = this.withDrawBalanceHandler.bind(this);
   }
 
   async getBalanceHandler(request, h) {
+    const { id: id_user } = request.auth.credentials;
 
+    const { amount } = await this._service.getBalance({ id_user });
+
+    const response = h.response({
+      status: 'success',
+      data: amount,
+    });
+    response.code(201);
+    return response;
   }
 
   async topUpBalanceHandler(request, h) {

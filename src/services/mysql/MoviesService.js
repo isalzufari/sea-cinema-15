@@ -24,12 +24,20 @@ class MoviesService {
       values: [id]
     }
 
-    const [result, fields] = await this._pool.query(
-      query.text,
-      query.values
-    );
+    const result = () => {
+      return new Promise((res, rej) => {
+        setTimeout(async () => {
+          const [result, fields] = await this._pool.query(
+            query.text,
+            query.values
+          );
 
-    return result;
+          res(result);
+        }, 200);
+      });
+    }
+
+    return await result();
   }
 }
 
