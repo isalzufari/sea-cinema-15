@@ -114,6 +114,112 @@ const api = (() => {
     // return data;
   }
 
+  async function getMovies() {
+    const response = await fetch(`${BASE_URL}/movies`);
+
+    const responseJson = await response.json();
+
+    const { status, message, data } = responseJson;
+
+    if (status !== 'success') {
+      throw new Error(message);
+    }
+
+    return data;
+  }
+
+  async function getMovieById({ id }) {
+    const response = await fetch(`${BASE_URL}/movies/${id}`);
+
+    const responseJson = await response.json();
+
+    const { status, message, data } = responseJson;
+
+    if (status !== 'success') {
+      throw new Error(message);
+    }
+
+    return data;
+  }
+
+  async function postBooking({ booking }) {
+    const response = await _fetchWithAuth(`${BASE_URL}/booking`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(booking),
+    });
+
+    const responseJson = await response.json();
+    const { status, message, data } = responseJson;
+
+    if (status !== 'success') {
+      throw new Error(message);
+    }
+
+    return status;
+  }
+
+  async function deleteBooking({ id_booked, total_cost, id_seat }) {
+    const response = await _fetchWithAuth(`${BASE_URL}/booking`, {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        id_booked,
+        total_cost,
+        id_seat
+      }),
+    });
+
+    const responseJson = await response.json();
+    const { status, message, data } = responseJson;
+
+    if (status !== 'success') {
+      throw new Error(message);
+    }
+
+    return status;
+  }
+
+  async function getBooking() {
+    const response = await _fetchWithAuth(`${BASE_URL}/booking`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+
+    const responseJson = await response.json();
+    const { status, message, data } = responseJson;
+
+    if (status !== 'success') {
+      throw new Error(message);
+    }
+
+    return data;
+  }
+
+  async function getBalance() {
+    const response = await _fetchWithAuth(`${BASE_URL}/balance`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      }
+    });
+
+    const responseJson = await response.json();
+    const { status, message, data } = responseJson;
+
+    if (status !== 'success') {
+      throw new Error(message);
+    }
+
+    return data;
+  }
+
   return {
     putAccessToken,
     getAccessToken,
@@ -124,6 +230,18 @@ const api = (() => {
     register,
     login,
     getOwnProfile,
+
+    // Movie
+    getMovies,
+    getMovieById,
+
+    // Booking
+    postBooking,
+    deleteBooking,
+    getBooking,
+
+    // Balance
+    getBalance,
   }
 })();
 

@@ -12,9 +12,11 @@ import Footer from './components/Footer';
 
 // Page
 import Movies from './pages/Movies';
+import Movie from './pages/Movie';
 import About from './pages/About';
 import Login from './pages/Login';
 import Register from './pages/Register';
+import Payment from './pages/Payment';
 
 // App Page
 import Main from './pages/App/Main';
@@ -72,6 +74,12 @@ function App() {
     logoutAction();
   }
 
+  const [booking, setBooking] = useState({
+    id_movie: 0,
+    total_cost: 0,
+    tickets: []
+  });
+
   return (
     <>
       <header>
@@ -81,7 +89,18 @@ function App() {
         <Routes>
           <Route path='/' element={<AppLayout />}>
             <Route index element={<Movies />} />
-            <Route path='movies' element={<Movies />} />
+            <Route path='movies'>
+              <Route index element={<Movies />} />
+              <Route path=':id' element={<Movie booking={booking} setBooking={setBooking} />} />
+            </Route>
+            <Route path='payment' element={
+              <Payment
+                booking={booking}
+                authUser={authUser}
+                setauthUser={setauthUser}
+                setBooking={setBooking}
+              />}
+            />
             <Route path='about' element={<About />} />
 
             <Route element={<LoggedInRoute authUser={authUser} />}>
