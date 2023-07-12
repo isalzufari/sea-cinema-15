@@ -72,7 +72,7 @@ class UsersService {
 
   async getUser({ id_user }) {
     const query = {
-      text: 'SELECT username, name, age FROM `users` WHERE id = ?',
+      text: 'SELECT username, name, age, photo FROM `users` WHERE id = ?',
       values: [id_user],
     };
 

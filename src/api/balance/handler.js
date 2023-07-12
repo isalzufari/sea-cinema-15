@@ -1,6 +1,7 @@
 class BalancesHandler {
-  constructor(service) {
+  constructor(service, balancesHistoryService) {
     this._service = service;
+    this._balanceHistory = balancesHistoryService;
 
     this.getBalanceHandler = this.getBalanceHandler.bind(this);
     this.topUpBalanceHandler = this.topUpBalanceHandler.bind(this);
@@ -9,12 +10,14 @@ class BalancesHandler {
 
   async getBalanceHandler(request, h) {
     const { id: id_user } = request.auth.credentials;
+    const { id: id_balance, amount } = await this._service.getBalance({ id_user });
+    const history = await this._balanceHistory.getBalanceHistory({ id_balance })
 
-    const { amount } = await this._service.getBalance({ id_user });
+    const mappedBalance = { amount, history }
 
     const response = h.response({
       status: 'success',
-      data: amount,
+      data: mappedBalance,
     });
     response.code(201);
     return response;
@@ -24,7 +27,10 @@ class BalancesHandler {
     const { id: id_user } = request.auth.credentials;
     const { amount } = request.payload;
 
+    const { id: id_balance } = await this._service.getBalance({ id_user });
+
     await this._service.topUpBalance({ amount, id_user });
+    await this._balanceHistory.addBalanceHistory({ id_balance, amount, status: 'topup' });
 
     const response = h.response({
       status: 'success',
@@ -38,7 +44,7 @@ class BalancesHandler {
     const { id: id_user } = request.auth.credentials;
     const { amount } = request.payload;
 
-    const { amount: currentBalance } = await this._service.getBalance({ id_user });
+    const { id: id_balance, amount: currentBalance } = await this._service.getBalance({ id_user });
 
     if (amount > 500000 || amount > currentBalance) {
       const response = h.response({
@@ -50,6 +56,7 @@ class BalancesHandler {
     }
 
     await this._service.withdrawBalance({ amount, id_user });
+    await this._balanceHistory.addBalanceHistory({ id_balance, amount, status: 'withdraw' });
 
     const response = h.response({
       status: 'success',

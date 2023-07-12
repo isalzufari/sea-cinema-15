@@ -9,7 +9,7 @@ class BalanceService {
   async getBalance({ id_user }) {
     await this.verifyBalance({ id_user });
     const query = {
-      text: 'SELECT amount FROM balance WHERE id_user = ?',
+      text: 'SELECT id, amount FROM balance WHERE id_user = ?',
       values: [id_user]
     }
 

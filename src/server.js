@@ -17,6 +17,7 @@ const TokenManager = require('./utils/TokenManager');
 
 const balances = require('./api/balance');
 const BalancesService = require('./services/mysql/BalancesService');
+const BalancesHistoryService = require('./services/mysql/BalancesHistoryService');
 
 const movies = require('./api/movies');
 const MoviesService = require('./services/mysql/MoviesService');
@@ -29,6 +30,7 @@ const SeatsService = require('./services/mysql/SeatsService');
 const init = async () => {
   const usersService = new UsersService();
   const balancesService = new BalancesService();
+  const balancesHistoryService = new BalancesHistoryService();
   const authenticationsService = new AuthenticationsService();
   const moviesService = new MoviesService();
   const bookingsService = new BookingsService();
@@ -124,6 +126,7 @@ const init = async () => {
       plugin: balances,
       options: {
         service: balancesService,
+        balancesHistoryService,
       },
       routes: {
         prefix: '/balance'
