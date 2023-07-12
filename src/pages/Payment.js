@@ -3,9 +3,9 @@ import { toRupiah } from '../utils';
 import api from '../utils/api';
 import { useNavigate } from 'react-router-dom';
 
-const Payment = ({ booking, authUser, setauthUser, setBooking }) => {
+const Payment = ({ booking, setBooking, authUser, setauthUser, showToast }) => {
   const navigate = useNavigate();
-  console.log(authUser);
+  console.log(booking);
   const [load, setload] = useState(true);
 
   const bookingHandler = async () => {
@@ -14,7 +14,7 @@ const Payment = ({ booking, authUser, setauthUser, setBooking }) => {
     const { total_cost } = booking;
 
     if (total_cost > balance) {
-      alert('balance not enough!');
+      showToast('balance not enough!');
       return;
     }
     setload(false);
@@ -46,9 +46,10 @@ const Payment = ({ booking, authUser, setauthUser, setBooking }) => {
             <h6 className='text-center mt-5'>you haven't booked</h6>
             :
             <>
-              {booking?.tickets?.map((book, key) => (
-                <div key={key} className="card mb-1">
-                  <div className="card-body">
+              <div className='card p-3'>
+                <h6>{booking?.name_movie}</h6>
+                {booking?.tickets?.map((book, key) => (
+                  <div key={key} className="card mb-1 p-3">
                     <div class="d-flex justify-content-between">
                       <h5>{book.name}</h5>
                       {/* <i class="bi bi-x-circle" onClick={() => removeSeat({ id: book.id_seat })} style={{ color: 'red', cursor: 'pointer' }}></i> */}
@@ -56,8 +57,8 @@ const Payment = ({ booking, authUser, setauthUser, setBooking }) => {
                     <small>Seat: {book.id_seat}</small>
                     <p>Age: {book.age}</p>
                   </div>
-                </div>
-              ))}
+                ))}
+              </div>
             </>
           }
         </div>

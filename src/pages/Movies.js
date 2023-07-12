@@ -5,14 +5,26 @@ import { toRupiah } from '../utils';
 
 const Movies = () => {
   const [movies, setMovies] = useState([]);
+  const [isLoad, setLoad] = useState(false);
 
   useEffect(() => {
     const getMovies = async () => {
+      setLoad(true);
       const movies = await api.getMovies();
       setMovies(movies);
+      setLoad(false);
     }
     getMovies();
   }, []);
+
+  if (isLoad) {
+    return <div className='text-center'>
+      <div class="spinner-grow" role="status">
+        <span class="visually-hidden">Loading...</span>
+      </div>
+    </div>
+  }
+
   return (
     <>
       {!movies?.length > 0 ?

@@ -152,7 +152,7 @@ const api = (() => {
     });
 
     const responseJson = await response.json();
-    const { status, message, data } = responseJson;
+    const { status, message } = responseJson;
 
     if (status !== 'success') {
       throw new Error(message);
@@ -175,7 +175,7 @@ const api = (() => {
     });
 
     const responseJson = await response.json();
-    const { status, message, data } = responseJson;
+    const { status, message } = responseJson;
 
     if (status !== 'success') {
       throw new Error(message);
@@ -220,6 +220,48 @@ const api = (() => {
     return data;
   }
 
+  async function topUpBalance({ amount }) {
+    const response = await _fetchWithAuth(`${BASE_URL}/balance/topup`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        amount
+      }),
+    });
+
+    const responseJson = await response.json();
+    const { status, message } = responseJson;
+
+    if (status !== 'success') {
+      throw new Error(message);
+    }
+
+    return { status, message };
+  }
+
+  async function withdrawBalance({ amount }) {
+    const response = await _fetchWithAuth(`${BASE_URL}/balance/withdraw`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        amount
+      }),
+    });
+
+    const responseJson = await response.json();
+    const { status, message } = responseJson;
+
+    if (status !== 'success') {
+      throw new Error(message);
+    }
+
+    return { status, message };
+  }
+
   return {
     putAccessToken,
     getAccessToken,
@@ -242,6 +284,8 @@ const api = (() => {
 
     // Balance
     getBalance,
+    topUpBalance,
+    withdrawBalance
   }
 })();
 

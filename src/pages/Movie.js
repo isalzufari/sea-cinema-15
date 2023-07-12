@@ -1,17 +1,17 @@
 import React, { useState, useEffect } from 'react'
-import { Link, useLocation } from 'react-router-dom'
+import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { convertDate, toRupiah } from '../utils';
-import useInput from '../hooks/useInput';
 
 import api from '../utils/api';
 
-const Movie = ({ booking, setBooking }) => {
+const Movie = ({ booking, setBooking, showToast, bootstrap }) => {
   const location = useLocation();
+  const navigate = useNavigate();
   const split = location.pathname.split('/');
   const id = split[2];
 
-  const [name, onName] = useInput('');
-  const [age, onAge] = useInput('');
+  const [name, onName] = useState('');
+  const [age, onAge] = useState('');
 
   const [movie, setMovie] = useState({});
   const [movieSeat, setMovieSeat] = useState([]);
@@ -24,8 +24,8 @@ const Movie = ({ booking, setBooking }) => {
       setMovie(data);
       setMovieSeat(data.seats);
       setIsLoad(false);
-      console.log(data);
     }
+
     getMovieById(id);
   }, []);
 
@@ -37,14 +37,27 @@ const Movie = ({ booking, setBooking }) => {
     </div>
   }
 
+  const openModal = (data) => {
+    setSeat(data)
+    const bootstrapLiveExample = document.getElementById('bookedSeat')
+    const modal = bootstrap.Modal.getInstance(bootstrapLiveExample)
+    modal.show()
+  }
+
   const addSeat = ({ id, seat_code, price, name, age }) => {
     if (!name || !age) {
-      alert('please fill name and age!')
+      // alert('please fill name and age!')
+      showToast('please fill name and age!')
+      if (!name) {
+        document.getElementById('inputName').focus();
+      }
+      document.getElementById('inputAge').focus();
       return;
     }
 
     if (age < movie.age_rating) {
-      alert('your age not old enough')
+      // alert('your age not old enough')
+      showToast('Your age not old enough!')
       return;
     }
 
@@ -53,6 +66,7 @@ const Movie = ({ booking, setBooking }) => {
     setBooking({
       ...booking,
       id_movie: movie.id,
+      name_movie: movie.title,
       total_cost: booking.total_cost + price,
       tickets: [
         ...booking.tickets,
@@ -64,6 +78,11 @@ const Movie = ({ booking, setBooking }) => {
         }
       ]
     });
+    const bootstrapLiveExample = document.getElementById('bookedSeat')
+    const modal = bootstrap.Modal.getInstance(bootstrapLiveExample)
+    modal.hide()
+    onName('');
+    onAge('');
   }
 
   const removeSeat = ({ id }) => {
@@ -104,14 +123,14 @@ const Movie = ({ booking, setBooking }) => {
           </small>
           <p className='mt-3'>{movie.description}</p>
           <h6>Seats</h6>
-          <div className="container text-center">
-            {movieSeat.length === 0 ?
+          <div className="container text-center mb-3">
+            {movieSeat?.length === 0 ?
               <h6>seat not available!</h6>
               :
               <div className="row row-cols-10 g-1">
                 {movieSeat?.map((seat, key) => (
-                  <div key={key} class="col">
-                    <button onClick={() => setSeat({ id: seat.id, seat_code: seat.seat_code })} disabled={seat.isBooked} data-bs-toggle="modal" data-bs-target="#bookedSeat" class={`p-3 border ${seat.isBooked ? 'bg-secondary' : 'bg-light'}`}>{seat.seat_code}</button>
+                  <div key={key} class="col" style={{ flex: '0 0' }}>
+                    <button onClick={() => openModal({ id: seat.id, seat_code: seat.seat_code })} disabled={seat.isBooked} style={{ color: seat.isBooked ? 'white' : 'black' }} class={`p-3 border ${seat.isBooked ? 'bg-secondary' : 'bg-light'}`}>{seat.seat_code}</button>
                   </div>
                 ))}
               </div>
@@ -133,7 +152,7 @@ const Movie = ({ booking, setBooking }) => {
           <div className="shadow p-3 mt-3 rounded">
             <div class="d-flex justify-content-between align-items-center">
               <h6>Total: {toRupiah(booking?.total_cost)}</h6>
-              <Link to="/payment" className='btn btn-primary'>Order</Link>
+              <button disabled={!booking?.total_cost} onClick={() => navigate('/payment')} className='btn btn-primary'>Order</button>
             </div>
           </div>
         </div>
@@ -150,12 +169,12 @@ const Movie = ({ booking, setBooking }) => {
             </div>
             <div class="modal-body">
               <div class="form-floating mb-3">
-                <input value={name} onChange={onName} type="text" class="form-control" id="floatingInput" placeholder="name@example.com" />
+                <input value={name} onChange={(e) => onName(e.target.value)} type="text" class="form-control" id="inputName" placeholder="name@example.com" />
                 <label for="floatingInput">name</label>
               </div>
 
               <div class="form-floating mb-3">
-                <input value={age} onChange={onAge} type="number" class="form-control" id="floatingInput" placeholder="name@example.com" />
+                <input value={age} onChange={(e) => onAge(e.target.value)} type="number" class="form-control" id="inputAge" placeholder="name@example.com" />
                 <label for="floatingInput">age</label>
               </div>
             </div>

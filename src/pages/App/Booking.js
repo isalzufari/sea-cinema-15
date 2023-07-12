@@ -2,16 +2,19 @@ import React, { useState, useEffect } from 'react'
 import api from '../../utils/api'
 import { Link } from 'react-router-dom';
 
-const Booking = () => {
+const Booking = ({ authUser, setauthUser }) => {
   const [booking, setBooking] = useState([]);
   const [refresh, setRefresh] = useState(false);
+  const [isLoad, setLoad] = useState(false);
 
   useEffect(() => {
     const getBooking = async () => {
+      setLoad(true);
       const booking = await api.getBooking();
       console.log(booking);
       setBooking(booking);
       setRefresh(false)
+      setLoad(false)
     }
     getBooking();
     console.log(booking);
@@ -23,11 +26,22 @@ const Booking = () => {
 
     const deleteBooking = await api.deleteBooking({ id_booked, total_cost, id_seat });
     console.log(deleteBooking);
+    const refreshBalance = await api.getBalance();
+    const refreshUser = { ...authUser, balance: refreshBalance }
+    setauthUser(refreshUser);
 
     if (deleteBooking === 'success') {
       alert('booking deleted successfully!');
       setRefresh(true);
     }
+  }
+
+  if (isLoad) {
+    return <div className='text-center'>
+      <div class="spinner-grow" role="status">
+        <span class="visually-hidden">Loading...</span>
+      </div>
+    </div>
   }
 
   return (

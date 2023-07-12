@@ -5,10 +5,12 @@ import api from './utils/api';
 
 // Styles
 import './styles/App.css';
+import * as bootstrap from 'bootstrap';
 
 // Component
 import Navigation from './components/Navigation';
 import Footer from './components/Footer';
+import Toast from './components/Toast';
 
 // Page
 import Movies from './pages/Movies';
@@ -48,6 +50,7 @@ const ProtectedRoute = ({ authUser, children }) => {
 
 function App() {
   const [authUser, setauthUser] = useState(false);
+  const [notifMessage, setNotifMessage] = useState('');
 
   useEffect(() => {
     const asyncPreloadProcess = async () => {
@@ -80,6 +83,13 @@ function App() {
     tickets: []
   });
 
+  const showToast = (message) => {
+    const toastLiveExample = document.getElementById('liveToast')
+    const toast = new bootstrap.Toast(toastLiveExample)
+    setNotifMessage(message)
+    toast.show()
+  }
+
   return (
     <>
       <header>
@@ -91,7 +101,12 @@ function App() {
             <Route index element={<Movies />} />
             <Route path='movies'>
               <Route index element={<Movies />} />
-              <Route path=':id' element={<Movie booking={booking} setBooking={setBooking} />} />
+              <Route path=':id' element={<Movie
+                booking={booking}
+                setBooking={setBooking}
+                showToast={showToast}
+                bootstrap={bootstrap}
+              />} />
             </Route>
             <Route path='payment' element={
               <Payment
@@ -99,6 +114,7 @@ function App() {
                 authUser={authUser}
                 setauthUser={setauthUser}
                 setBooking={setBooking}
+                showToast={showToast}
               />}
             />
             <Route path='about' element={<About />} />
@@ -112,8 +128,12 @@ function App() {
           <Route path='/app' element={<AppLayout />}>
             <Route element={<ProtectedRoute authUser={authUser} />}>
               <Route index element={<Main />} />
-              <Route path='balance' element={<Balance />} />
-              <Route path='booking' element={<Booking />} />
+              <Route path='balance' element={<Balance authUser={authUser} setauthUser={setauthUser} />} />
+              <Route path='booking' element={<Booking
+                authUser={authUser}
+                setauthUser={setauthUser}
+                showToast={showToast}
+              />} />
               <Route path='profile' element={<Profile />} />
             </Route>
           </Route>
@@ -122,6 +142,8 @@ function App() {
             <h1 className='h3 text-center m-5'>Page not found</h1>
           } />
         </Routes>
+
+        <Toast message={notifMessage} />
       </main >
       <footer>
         <Footer />
