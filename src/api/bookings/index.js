@@ -9,14 +9,16 @@ module.exports = {
     ticketsService,
     seatsService,
     balancesService,
-    moviesService
+    moviesService,
+    balancesHistoryService
   }) => {
     const bookingsHandler = new BookingsHandler(
       service,
       ticketsService,
       seatsService,
       balancesService,
-      moviesService
+      moviesService,
+      balancesHistoryService
     );
     server.route(routes(bookingsHandler));
   }

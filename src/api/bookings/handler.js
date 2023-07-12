@@ -1,10 +1,11 @@
 class BookingsHandler {
-  constructor(service, ticketsService, seatsService, balancesService, moviesService) {
+  constructor(service, ticketsService, seatsService, balancesService, moviesService, balancesHistoryService) {
     this._service = service;
     this._ticketsService = ticketsService;
     this._seatsService = seatsService;
     this._balancesService = balancesService;
     this._moviesService = moviesService;
+    this._balancesHistoryService = balancesHistoryService;
 
     this.getBookingHandler = this.getBookingHandler.bind(this);
     this.postBookingHandler = this.postBookingHandler.bind(this);
@@ -33,7 +34,7 @@ class BookingsHandler {
     const { id: id_user } = request.auth.credentials;
     const { id_movie, total_cost, tickets } = request.payload;
 
-    const { amount: currentBalance } = await this._balancesService.getBalance({ id_user });
+    const { id: id_balance, amount: currentBalance } = await this._balancesService.getBalance({ id_user });
 
     if (total_cost > currentBalance) {
       const response = h.response({
@@ -67,6 +68,7 @@ class BookingsHandler {
     }
 
     await this._balancesService.withdrawBalance({ amount: total_cost, id_user })
+    await this._balancesHistoryService.addBalanceHistory({ id_balance, amount: total_cost, status: 'booked' })
 
     const id_booked = await this._service.addBooked({ id_user, id_movie, total_cost });
 
@@ -89,6 +91,8 @@ class BookingsHandler {
     const { id: id_user } = request.auth.credentials;
     const { id_booked, total_cost, id_seat } = request.payload;
 
+    const { id: id_balance } = await this._balancesService.getBalance({ id_user });
+
     await this._service.deleteBooked({ id_booked, id_user });
 
     id_seat.forEach(async (id) => {
@@ -96,6 +100,7 @@ class BookingsHandler {
     });
 
     await this._balancesService.topUpBalance({ amount: total_cost, id_user });
+    await this._balancesHistoryService.addBalanceHistory({ id_balance, amount: total_cost, status: 'unbooked' })
 
     const response = h.response({
       status: 'success',

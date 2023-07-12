@@ -139,7 +139,8 @@ const init = async () => {
         ticketsService,
         seatsService,
         balancesService,
-        moviesService
+        moviesService,
+        balancesHistoryService,
       },
       routes: {
         prefix: '/booking'
