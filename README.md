@@ -4,7 +4,7 @@ A brand-new movie ticket booking app.
 
 # BACK END
 
-Built with javascript and framwork Hapi.JS and
+Built with javascript and framwork Hapi.JS
 
 ## How to run?
 
