@@ -50,6 +50,7 @@ const api = (() => {
     const { status, message, data } = responseJson;
 
     if (status !== 'success') {
+      alert(message);
       throw new Error(message);
     }
 
@@ -72,6 +73,7 @@ const api = (() => {
     const { status, message, data } = responseJson;
 
     if (status !== 'success') {
+      alert(message);
       throw new Error(message);
     }
 
@@ -255,9 +257,9 @@ const api = (() => {
     const responseJson = await response.json();
     const { status, message } = responseJson;
 
-    if (status !== 'success') {
-      throw new Error(message);
-    }
+    // if (status !== 'success') {
+    //   throw new Error(message);
+    // }
 
     return { status, message };
   }

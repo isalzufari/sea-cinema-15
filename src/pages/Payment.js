@@ -19,7 +19,7 @@ const Payment = ({ booking, setBooking, authUser, setauthUser, showToast }) => {
     }
     setload(false);
     const booked = await api.postBooking({ booking });
-    const refreshBalance = await api.getBalance();
+    const { amount: refreshBalance } = await api.getBalance();
     const refreshUser = { ...authUser, balance: refreshBalance }
     setauthUser(refreshUser);
 
@@ -50,7 +50,7 @@ const Payment = ({ booking, setBooking, authUser, setauthUser, showToast }) => {
                 <h6>{booking?.name_movie}</h6>
                 {booking?.tickets?.map((book, key) => (
                   <div key={key} className="card mb-1 p-3">
-                    <div class="d-flex justify-content-between">
+                    <div className="d-flex justify-content-between">
                       <h5>{book.name}</h5>
                       {/* <i class="bi bi-x-circle" onClick={() => removeSeat({ id: book.id_seat })} style={{ color: 'red', cursor: 'pointer' }}></i> */}
                     </div>
@@ -64,18 +64,18 @@ const Payment = ({ booking, setBooking, authUser, setauthUser, showToast }) => {
         </div>
         <div className="col-4">
           <div className="shadow p-3 rounded">
-            <div class="d-flex justify-content-between">
+            <div className="d-flex justify-content-between">
               <h5>total price</h5>
               <p>{toRupiah(booking.total_cost)}</p>
             </div>
             <hr />
-            <div class="d-flex justify-content-between">
+            <div className="d-flex justify-content-between">
               <h5>balance</h5>
               <p>{toRupiah(authUser.balance)}</p>
             </div>
-            <div class="d-grid gap-2">
+            <div className="d-grid gap-2">
               <button disabled={booking.tickets.length === 0} onClick={() => bookingHandler()} className='btn btn-primary'>
-                <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true" hidden={load}></span>
+                <span className="spinner-border spinner-border-sm" role="status" aria-hidden="true" hidden={load}></span>
                 {' '}Pay
               </button>
             </div>

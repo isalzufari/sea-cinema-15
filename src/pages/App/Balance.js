@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { toRupiah, convertDate } from '../../utils'
 import api from '../../utils/api'
 
-const Balance = ({ authUser, setauthUser, showToast }) => {
+const Balance = ({ authUser, setauthUser, showToast, bootstrap }) => {
   const [amount, setAmount] = useState(0);
   const [handle, setHandle] = useState(true);
   const [history, setHistory] = useState([]);
@@ -16,7 +16,6 @@ const Balance = ({ authUser, setauthUser, showToast }) => {
     const refreshUser = { ...authUser, balance: refreshBalance }
     setauthUser(refreshUser);
     setHistory(history);
-    console.log(history);
   }
 
   const handleTopUp = async ({ amount }) => {
@@ -26,6 +25,9 @@ const Balance = ({ authUser, setauthUser, showToast }) => {
       showToast(message)
       await refreshBalance();
       setAmount('0');
+      const bootstrapLiveExample = document.getElementById('setAmount')
+      const modal = bootstrap.Modal.getInstance(bootstrapLiveExample)
+      modal.hide()
     } else {
       showToast(message);
     }
@@ -38,6 +40,9 @@ const Balance = ({ authUser, setauthUser, showToast }) => {
       showToast(message)
       await refreshBalance();
       setAmount('0');
+      const bootstrapLiveExample = document.getElementById('setAmount')
+      const modal = bootstrap.Modal.getInstance(bootstrapLiveExample)
+      modal.hide()
     } else {
       showToast(message);
     }
@@ -51,7 +56,7 @@ const Balance = ({ authUser, setauthUser, showToast }) => {
             <div className="d-flex justify-content-between">
               <div>
                 <h1 className='h5'>total balance</h1>
-                <small class="badge text-bg-danger">{toRupiah(authUser.balance)}</small>
+                <small className="badge text-bg-danger">{toRupiah(authUser.balance)}</small>
               </div>
               <button onClick={() => { setHandle(false) }} className='btn btn-primary' data-bs-toggle="modal" data-bs-target="#setAmount">top up</button>
             </div>
@@ -71,7 +76,10 @@ const Balance = ({ authUser, setauthUser, showToast }) => {
                   <h6>{convertDate(h.createdAt)}</h6>
                   <div className="d-flex justify-content-between">
                     <h6>{h.status[0].toUpperCase() + h.status.slice(1)}</h6>
-                    <h6 style={{ color: `${h.status === 'topup' ? 'green' : 'red'}` }}>{h.status === 'topup' ? '+ ' : '- '}{toRupiah(h.amount)}</h6>
+                    <h6
+                      style={{ color: `${h.status === 'topup' || h.status === 'unbooked' ? 'green' : 'red'}` }}>
+                      {h.status === 'topup' || h.status === 'unbooked' ? '+ ' : '- '}{toRupiah(h.amount)}
+                    </h6>
                   </div>
                 </div>
               </div>
@@ -82,23 +90,23 @@ const Balance = ({ authUser, setauthUser, showToast }) => {
 
       {/* Modal */}
 
-      <div class="modal fade" id="setAmount" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h1 class="modal-title fs-5" id="exampleModalLabel">set amount</h1>
-              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      <div className="modal fade" id="setAmount" tabIndex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div className="modal-dialog">
+          <div className="modal-content">
+            <div className="modal-header">
+              <h1 className="modal-title fs-5" id="exampleModalLabel">set amount</h1>
+              <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <div class="modal-body">
-              <div class="form-floating mb-3">
-                <input value={amount} onChange={(e) => setAmount(e.target.value)} type="number" class="form-control" id="floatingInput" placeholder="0" />
-                <label for="floatingInput">Rp</label>
+            <div className="modal-body">
+              <div className="form-floating mb-3">
+                <input value={amount} onChange={(e) => setAmount(e.target.value)} type="number" className="form-control" id="floatingInput" placeholder="0" />
+                <label htmlFor="floatingInput">Rp</label>
               </div>
             </div>
-            <div class="modal-footer">
-              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-              <button hidden={handle} onClick={() => handleTopUp({ amount })} disabled={!amount} type="button" class="btn btn-primary">topup</button>
-              <button hidden={!handle} onClick={() => handleWithdraw({ amount })} disabled={!amount} type="button" class="btn btn-primary">withdraw</button>
+            <div className="modal-footer">
+              <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+              <button hidden={handle} onClick={() => handleTopUp({ amount })} disabled={!amount} type="button" className="btn btn-primary">topup</button>
+              <button hidden={!handle} onClick={() => handleWithdraw({ amount })} disabled={!amount} type="button" className="btn btn-primary">withdraw</button>
             </div>
           </div>
         </div>

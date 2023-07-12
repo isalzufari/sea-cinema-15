@@ -31,8 +31,8 @@ const Movie = ({ booking, setBooking, showToast, bootstrap }) => {
 
   if (isLoad) {
     return <div className='text-center'>
-      <div class="spinner-grow" role="status">
-        <span class="visually-hidden">Loading...</span>
+      <div className="spinner-grow" role="status">
+        <span className="visually-hidden">Loading...</span>
       </div>
     </div>
   }
@@ -109,16 +109,16 @@ const Movie = ({ booking, setBooking, showToast, bootstrap }) => {
 
       <div className='row'>
         <div className="col-12 col-md-6 position-relative">
-          <img src={movie.poster_url} className="img-fluid rounded" alt={movie.title} style={{ height: '-webkit-fill-available', width: '-webkit-fill-available', objectFit: 'cover' }}></img>
-          <span style={{ left: 95 + '%', fontSize: 15 }} class="position-absolute top-0 translate-middle badge rounded-pill bg-danger">
+          <img src={movie.poster_url} className="img-fluid rounded" alt={movie.title} style={{ width: '-webkit-fill-available', objectFit: 'cover' }}></img>
+          <span style={{ left: 95 + '%', fontSize: 15 }} className="position-absolute top-0 translate-middle badge rounded-pill bg-danger">
             {movie.age_rating}
-            <span class="visually-hidden">unread messages</span>
+            <span className="visually-hidden">unread messages</span>
           </span>
         </div>
 
         <div className='col-12 col-md-6'>
           <h4><b>{movie.title}</b></h4>
-          <h6><span class="badge text-bg-danger">{toRupiah(movie?.ticket_price)}</span></h6>
+          <h6><span className="badge text-bg-danger">{toRupiah(movie?.ticket_price)}</span></h6>
           <small className='text-muted'>
             Release: {' '}{convertDate(movie?.release_date)}
           </small>
@@ -130,8 +130,8 @@ const Movie = ({ booking, setBooking, showToast, bootstrap }) => {
               :
               <div className="row row-cols-10 g-1">
                 {movieSeat?.map((seat, key) => (
-                  <div key={key} class="col" style={{ flex: '0 0' }}>
-                    <button onClick={() => openModal({ id: seat.id, seat_code: seat.seat_code })} disabled={seat.isBooked} style={{ color: seat.isBooked ? 'white' : 'black' }} class={`p-3 border ${seat.isBooked ? 'bg-secondary' : 'bg-light'}`}>{seat.seat_code}</button>
+                  <div key={key} className="col" style={{ flex: '0 0' }}>
+                    <button onClick={() => openModal({ id: seat.id, seat_code: seat.seat_code })} disabled={seat.isBooked} style={{ color: seat.isBooked ? 'white' : 'black' }} className={`p-3 border ${seat.isBooked ? 'bg-secondary' : 'bg-light'}`}>{seat.seat_code}</button>
                   </div>
                 ))}
               </div>
@@ -141,9 +141,9 @@ const Movie = ({ booking, setBooking, showToast, bootstrap }) => {
           {booking?.tickets?.map((book, key) => (
             <div key={key} className="card mb-1">
               <div className="card-body">
-                <div class="d-flex justify-content-between">
+                <div className="d-flex justify-content-between">
                   <h5>{book.name}</h5>
-                  <i class="bi bi-x-circle" onClick={() => removeSeat({ id: book.id_seat })} style={{ color: 'red', cursor: 'pointer' }}></i>
+                  <i className="bi bi-x-circle" onClick={() => removeSeat({ id: book.id_seat })} style={{ color: 'red', cursor: 'pointer' }}></i>
                 </div>
                 <p>Age: {book.age}</p>
                 <span style={{ fontSize: 10 }} className='badge text-bg-danger'>Seat: {book.seat_code}</span>
@@ -151,7 +151,7 @@ const Movie = ({ booking, setBooking, showToast, bootstrap }) => {
             </div>
           ))}
           <div className="shadow p-3 mt-3 rounded">
-            <div class="d-flex justify-content-between align-items-center">
+            <div className="d-flex justify-content-between align-items-center">
               <h6>Total: {toRupiah(booking?.total_cost)}</h6>
               <button disabled={!booking?.total_cost} onClick={() => navigate('/payment')} className='btn btn-primary'>Order</button>
             </div>
@@ -161,27 +161,27 @@ const Movie = ({ booking, setBooking, showToast, bootstrap }) => {
 
       {/* Modal */}
 
-      <div class="modal fade" id="bookedSeat" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h1 class="modal-title fs-5" id="exampleModalLabel">Modal title</h1>
-              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      <div className="modal fade" id="bookedSeat" tabIndex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div className="modal-dialog">
+          <div className="modal-content">
+            <div className="modal-header">
+              <h1 className="modal-title fs-5" id="exampleModalLabel">Modal title</h1>
+              <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <div class="modal-body">
-              <div class="form-floating mb-3">
-                <input value={name} onChange={(e) => onName(e.target.value)} type="text" class="form-control" id="inputName" placeholder="name@example.com" />
-                <label for="floatingInput">name</label>
+            <div className="modal-body">
+              <div className="form-floating mb-3">
+                <input value={name} onChange={(e) => onName(e.target.value)} type="text" className="form-control" id="inputName" placeholder="name@example.com" />
+                <label htmlFor="floatingInput">name</label>
               </div>
 
-              <div class="form-floating mb-3">
-                <input value={age} onChange={(e) => onAge(e.target.value)} type="number" class="form-control" id="inputAge" placeholder="name@example.com" />
-                <label for="floatingInput">age</label>
+              <div className="form-floating mb-3">
+                <input value={age} onChange={(e) => onAge(e.target.value)} type="number" className="form-control" id="inputAge" placeholder="name@example.com" />
+                <label htmlFor="floatingInput">age</label>
               </div>
             </div>
-            <div class="modal-footer">
-              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-              <button onClick={() => addSeat({ id: seat.id, seat_code: seat.seat_code, price: movie.ticket_price, name, age })} type="button" class="btn btn-primary">Save changes</button>
+            <div className="modal-footer">
+              <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+              <button onClick={() => addSeat({ id: seat.id, seat_code: seat.seat_code, price: movie.ticket_price, name, age })} type="button" className="btn btn-primary">Save changes</button>
             </div>
           </div>
         </div>

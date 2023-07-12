@@ -11,7 +11,7 @@ const Navigation = ({ authUser, signOut }) => {
     <nav className="navbar navbar-expand-lg bg-light shadow-sm">
       <div className="container p-2">
         <Link className="navbar-brand" to='/'>
-          <img src="/logo512.png" style={{ width: 50, height: 50, objectFit: 'cover' }} className='img-fluid rounded-circle' alt='sea_cinema' />
+          <img src="/logo192.png" style={{ width: 50, height: 50, objectFit: 'cover' }} className='img-fluid rounded-circle' alt='sea_cinema' />
         </Link>
         <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
           <span className="navbar-toggler-icon"></span>

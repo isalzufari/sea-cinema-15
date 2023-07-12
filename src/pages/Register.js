@@ -23,29 +23,29 @@ const Register = () => {
       <form className='text-center'>
         {/* <img class="mb-4" src="/docs/5.2/assets/brand/bootstrap-logo.svg" alt="" width="72" height="57" /> */}
 
-        <h1 class="h4 mb-3 fw-normal">register</h1>
+        <h1 className="h4 mb-3 fw-normal">register</h1>
 
-        <div class="form-floating mb-3">
-          <input value={name} onChange={onNameChange} type="text" class="form-control" id="floatingInput" placeholder="full name" />
-          <label for="floatingInput">nama</label>
+        <div className="form-floating mb-3">
+          <input value={name} onChange={onNameChange} type="text" className="form-control" id="name" placeholder="full name" />
+          <label htmlFor="floatingInput">nama</label>
         </div>
 
-        <div class="form-floating mb-3">
-          <input value={age} onChange={onAgeChange} type="number" class="form-control" id="floatingInput" placeholder="name@example.com" />
-          <label for="floatingInput">age</label>
+        <div className="form-floating mb-3">
+          <input value={age} onChange={onAgeChange} type="number" className="form-control" id="age" placeholder="name@example.com" />
+          <label htmlFor="floatingInput">age</label>
         </div>
 
-        <div class="form-floating mb-3">
-          <input value={username} onChange={onUsernameChange} type="email" class="form-control" id="floatingInput" placeholder="username" />
-          <label for="floatingInput">username</label>
+        <div className="form-floating mb-3">
+          <input value={username} onChange={onUsernameChange} type="email" className="form-control" id="username" placeholder="username" />
+          <label htmlFor="floatingInput">username</label>
         </div>
 
-        <div class="form-floating mb-3">
-          <input value={password} onChange={onPasswordChange} type="password" class="form-control" id="floatingPassword" placeholder="password" />
-          <label for="floatingPassword">password</label>
+        <div className="form-floating mb-3">
+          <input value={password} onChange={onPasswordChange} type="password" className="form-control" id="passwprd" placeholder="password" />
+          <label htmlFor="floatingPassword">password</label>
         </div>
 
-        <button onClick={() => onRegister({ username, password, name, age })} class="w-100 btn btn btn-primary" type="button">daftar</button>
+        <button onClick={() => onRegister({ username, password, name, age })} className="w-100 btn btn btn-primary" type="button">daftar</button>
         <p className='mt-3'>have an account? <Link to="/login">login</Link></p>
       </form>
     </div>

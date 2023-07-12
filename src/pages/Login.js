@@ -19,19 +19,19 @@ const Login = ({ setauthUser }) => {
       <form className='text-center'>
         {/* <img class="mb-4" src="/docs/5.2/assets/brand/bootstrap-logo.svg" alt="" width="72" height="57" /> */}
 
-        <h1 class="h4 mb-3 fw-normal">login</h1>
+        <h1 className="h4 mb-3 fw-normal">login</h1>
 
-        <div class="form-floating mb-3">
-          <input value={username} onChange={onUsernameChange} type="email" class="form-control" id="floatingInput" placeholder="name@example.com" />
-          <label for="floatingInput">username</label>
+        <div className="form-floating mb-3">
+          <input value={username} onChange={onUsernameChange} type="email" className="form-control" id="username" placeholder="name@example.com" />
+          <label htmlFor="floatingInput">username</label>
         </div>
 
-        <div class="form-floating mb-3">
-          <input value={password} onChange={onPasswordChange} type="password" class="form-control" id="floatingPassword" placeholder="password" />
-          <label for="floatingPassword">password</label>
+        <div className="form-floating mb-3">
+          <input value={password} onChange={onPasswordChange} type="password" className="form-control" id="password" placeholder="password" />
+          <label htmlFor="floatingPassword">password</label>
         </div>
 
-        <button onClick={() => onLogin({ username, password })} class="w-100 btn btn btn-primary" type="button">masuk</button>
+        <button onClick={() => onLogin({ username, password })} className="w-100 btn btn btn-primary" type="button">masuk</button>
         <p className='mt-3'>dont have an account? <Link to="/register">register</Link></p>
       </form>
     </div>

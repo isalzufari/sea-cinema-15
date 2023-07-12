@@ -19,8 +19,8 @@ const Movies = () => {
 
   if (isLoad) {
     return <div className='text-center'>
-      <div class="spinner-grow" role="status">
-        <span class="visually-hidden">Loading...</span>
+      <div className="spinner-grow" role="status">
+        <span className="visually-hidden">Loading...</span>
       </div>
     </div>
   }
@@ -38,11 +38,11 @@ const Movies = () => {
               <Link to={`/movies/${movie.id}`} className='text-decoration-none text-dark'>
                 <div className="card position-relative">
                   {movie.age_rating !== "" &&
-                    <span style={{ left: 90 + '%' }} class="position-absolute top-0 translate-middle badge rounded-pill bg-danger">
+                    <span style={{ left: 90 + '%' }} className="position-absolute top-0 translate-middle badge rounded-pill bg-danger">
                       Age: {movie.age_rating}
                     </span>
                   }
-                  <img src={movie.poster_url} class="card-img" alt={movie.title} style={{ objectFit: 'cover', height: 180 }} />
+                  <img src={movie.poster_url} className="card-img" alt={movie.title} style={{ objectFit: 'cover', height: 180 }} />
                   <div className="card-body">
                     <h5 className="h6 card-title text-truncate"><b>{movie.title}</b></h5>
                     <p className="card-text text-truncate">{movie.description}</p>

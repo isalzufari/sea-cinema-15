@@ -128,7 +128,12 @@ function App() {
           <Route path='/app' element={<AppLayout />}>
             <Route element={<ProtectedRoute authUser={authUser} />}>
               <Route index element={<Main />} />
-              <Route path='balance' element={<Balance authUser={authUser} setauthUser={setauthUser} />} />
+              <Route path='balance' element={<Balance
+                authUser={authUser}
+                setauthUser={setauthUser}
+                showToast={showToast}
+                bootstrap={bootstrap}
+              />} />
               <Route path='booking' element={<Booking
                 authUser={authUser}
                 setauthUser={setauthUser}
