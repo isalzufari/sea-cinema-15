@@ -39,8 +39,9 @@ const Movie = ({ booking, setBooking, showToast, bootstrap }) => {
 
   const openModal = (data) => {
     setSeat(data)
+    console.log(data);
     const bootstrapLiveExample = document.getElementById('bookedSeat')
-    const modal = bootstrap.Modal.getInstance(bootstrapLiveExample)
+    const modal = new bootstrap.Modal(bootstrapLiveExample)
     modal.show()
   }
 
