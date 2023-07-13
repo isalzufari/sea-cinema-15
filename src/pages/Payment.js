@@ -5,7 +5,6 @@ import { useNavigate } from 'react-router-dom';
 
 const Payment = ({ booking, setBooking, authUser, setauthUser, showToast }) => {
   const navigate = useNavigate();
-  console.log(booking);
   const [load, setload] = useState(true);
 
   const bookingHandler = async () => {
