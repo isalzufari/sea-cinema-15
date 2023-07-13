@@ -41,6 +41,15 @@ Built with javascript and framwork Hapi.JS
   ACCESS_TOKEN_AGE=1800
   ```
 
+- Create database and export:
+
+  ```bash
+  mysql -u root;
+  CREATE DATABASE db_sea_cinema_compfest;
+  exit;
+  mysql -u root -p db_sea_cinema_compfest < utils/db_sea_cinema_compfest.sql
+  ```
+
 - Install all the needed NPM packages:
 
   ```bash
