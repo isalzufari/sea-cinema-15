@@ -41,7 +41,7 @@ Built with javascript and framwork Hapi.JS
   ACCESS_TOKEN_AGE=1800
   ```
 - ERD of database
-  ![ERD Database of SEA CINEMA](https://github.com/isalzufari/sea-cinema-15/blob/server-dev/src/utils/architecture design-Database Design.drawio.png?raw=true)
+  ![ERD Database of SEA CINEMA](https://github.com/isalzufari/sea-cinema-15/blob/server-dev/src/utils/er-design.png?raw=true)
 
 - Create database and export:
 
