@@ -40,6 +40,8 @@ Built with javascript and framwork Hapi.JS
   REFRESH_TOKEN_KEY=74bd8406998059a123e9620992f46456d08c786fbf7cba84fbe28a75ad7561b0017d232d8cb264989236f7321b4cce30bc5add8d8bfb66ba774be9fa367ac350
   ACCESS_TOKEN_AGE=1800
   ```
+- ERD of database
+  ![ERD Database of SEA CINEMA](src/utils/architecture design-Database Design.drawio.png)
 
 - Create database and export:
 
